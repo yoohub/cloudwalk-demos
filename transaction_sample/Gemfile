@@ -1,0 +1,4 @@
+source :rubygems
+
+gem 'string2hex'
+gem 'socket'

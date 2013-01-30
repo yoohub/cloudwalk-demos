@@ -3,6 +3,7 @@ require 'string2hex'
 
 #server = TCPSocket.open('ec2-23-23-49-158.compute-1.amazonaws.com',2000)
 #server = TCPSocket.open('localhost',2000)
+#server = TCPSocket.open('177.106.89.125',15555)
 server = TCPSocket.open('demo.cloudwalk.io',2000)
 
 a = "2"

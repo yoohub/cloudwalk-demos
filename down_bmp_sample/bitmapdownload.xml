@@ -1,0 +1,76 @@
+﻿<posxmlapplication xmlns="http://tempuri.org/posxml.xsd">
+	<page name="main">
+		
+		<!-- VARIABLE -->
+		<integervariable value="1" variable="iNumOption"/>
+		<integervariable value="1" variable="iNumReturn"/>
+		<stringvariable value="" variable="strReturn"/>
+		<stringvariable value="" variable="strAux"/>
+		<stringvariable value="imggraph.bmp" variable="strFileName"/>
+		
+		<!-- MENU -->
+		<while operator="notequalto" value="5" variable="$(iNumOption)">
+			<menu options="Options:\\1-Download \2-Display \3-Print \4-Delete \5-Quit" variable="$(iNumOption)"/>
+			
+			<!-- DOWNLOAD FROM MANAGER -->
+			<if operator="equalto" value="1" variable="$(iNumOption)">
+				<cleandisplay/>
+				<display column="1" line="1" message="Downloading..."/>
+				<downloadfile deleteafterdownload="0" filename="$(strFileName)" remotepath="$(strFileName)" variablereturn="$(iNumReturn)"/>
+				<if operator="equalto" value="1" variable="$(iNumReturn)">
+					<cleandisplay/>
+					<display column="1" line="1" message="Download Success!"/>
+				<else/>
+					<cleandisplay/>
+					<inttostring variableinteger="$(iNumReturn)" variablestring="$(strReturn)"/>
+					<stringvariable value="Download Error: " variable="$(strAux)"/>
+					<joinstring firstvalue="$(strAux)" secondvalue="$(strReturn)" variabledestination="$(strAux)"/>
+					<display column="1" line="1" message="$(strAux)"/>
+				</if>
+				<waitkey/>
+			</if>
+			
+			<!-- DISPLAY IMAGE -->
+			<if operator="equalto" value="2" variable="$(iNumOption)">
+				<cleandisplay/>
+				<displaybitmap filename="$(strFileName)" variablereturn="$(iNumReturn)"/>
+				<if operator="notequalto" value="1" variable="$(iNumReturn)">
+					<cleandisplay/>
+					<display column="1" line="1" message="Display failed..."/>
+				</if>
+				<waitkey/>
+			</if>
+			
+			<!-- PRINT IMAGE -->
+			<if operator="equalto" value="3" variable="$(iNumOption)">
+				<printbitmap filename="$(strFileName)" variablereturn="$(iNumReturn)"/>
+				<cleandisplay/>
+				<if operator="equalto" value="1" variable="$(iNumReturn)">
+					<display column="1" line="1" message="Print success!"/>
+					<paperfeed/>
+				<else/>
+					<if operator="equalto" value="0" variable="$(iNumReturn)">
+						<display column="1" line="1" message="File not found!"/>	
+					<else/>
+						<if operator="equalto" value="-1" variable="$(iNumReturn)">
+							<display column="1" line="1" message="Invalid size!"/>	
+						<else/>
+							<if operator="equalto" value="-2" variable="$(iNumReturn)">
+								<display column="1" line="1" message="Invalid format!"/>
+							</if>
+						</if>
+					</if>
+				</if>
+				<waitkey/>
+			</if>
+			
+			<!-- DELETE IMAGE -->
+			<if operator="equalto" value="4" variable="$(iNumOption)">
+				<cleandisplay/>
+				<deletefile filename="$(strFileName)"/>
+				<display column="1" line="1" message="File deleted!"/>
+				<waitkey/>
+			</if>
+		</while>
+	</page>
+</posxmlapplication>
